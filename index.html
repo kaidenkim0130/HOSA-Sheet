@@ -16,17 +16,16 @@
     <table id="myTable"></table>
   </div>
 <script>
-  // let SheetId = [
-  //   import.meta.env.PUBLIC_ID1,
-  //   import.meta.env.PUBLIC_ID2,
-  //   import.meta.env.PUBLIC_ID3,
-  // ];
-  // const sheetTitle = import.meta.env.PUBLIC_CHECK;
-  // let randInt = Math.floor(Math.random() * 3);
+   let SheetId = [
+     "1YGoA86pU8bocFL7vmLCXaYcJbVQAvtc-Zz0xzpF1GUA",
+     "1QhQyF7CxGCAeHTPKplFg9Y7Y9YGJH-h-s5Yzq4gaJ44"
+     ];
+  const sheetTitle = import.meta.env.PUBLIC_CHECK;
+  let randInt = Math.floor(Math.random() * 2);
 
   const FULL_URL =
     "https://docs.google.com/spreadsheets/d/" +
-    "1cZJCctF73JpUSXWeuGG9sJRVWq9hTGD9ZsPrazAIzyc" +
+    SheetId[randInt] +
     "/gviz/tq?sheet=" +
     "Sheet1";
   fetch(FULL_URL)
