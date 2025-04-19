@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <Navbar />
+  <div class="search-container">
+    <input type="text" id="myInput" placeholder="Search for your name" />
+    <button type="submit" id="Search"> Search </button>
+  </div>
+  <div class="tablewrap">
+    <table id="myTable"></table>
+  </div>
+<script>
+  // let SheetId = [
+  //   import.meta.env.PUBLIC_ID1,
+  //   import.meta.env.PUBLIC_ID2,
+  //   import.meta.env.PUBLIC_ID3,
+  // ];
+  // const sheetTitle = import.meta.env.PUBLIC_CHECK;
+  // let randInt = Math.floor(Math.random() * 3);
+
+  const FULL_URL =
+    "https://docs.google.com/spreadsheets/d/" +
+    "1cZJCctF73JpUSXWeuGG9sJRVWq9hTGD9ZsPrazAIzyc" +
+    "/gviz/tq?sheet=" +
+    "Sheet1";
+  fetch(FULL_URL)
+    .then((res) => res.text())
+    .then((rep) => {
+      let data = JSON.parse(rep.substring(47).slice(0, -2));
+      console.log(data);
+      const Table = document.getElementById("myTable");
+      const columns = data.table.cols.length;
+      const rows = data.table.rows.length;
+
+      const TableRow = document.createElement("tr");
+      Table.append(TableRow);
+      for (let j = 0; j < columns; j++) {
+        const TableHeader = document.createElement("th");
+        TableRow.append(TableHeader);
+        try {
+          TableHeader.innerHTML = data.table.cols[j].label;
+        } catch (error) {
+          TableHeader.innerHTML = "";
+        }
+      }
+
+      for (let i = 0; i < rows; i++) {
+        const TableRow = document.createElement("tr");
+        Table.append(TableRow);
+        for (let k = 0; k < columns; k++) {
+          const Cell = document.createElement("td");
+          TableRow.append(Cell);
+          try {
+            if (data.table.rows[i].c[k].f === undefined) {
+              Cell.innerHTML = data.table.rows[i].c[k].v;
+            } else {
+              Cell.innerHTML = data.table.rows[i].c[k].f;
+            }
+          } catch (error) {
+            Cell.innerHTML = "";
+          }
+        }
+      }
+    });
+
+  const input = document.getElementById("myInput");
+  input.addEventListener("keydown", (event) => {
+    if (event.key == "Enter") {
+      Search();
+    }
+  });
+  const button = document.getElementById("Search");
+  button.addEventListener("click", (event) => {
+    Search();
+  });
+  function Search() {
+    //Search
+    const input = document.getElementById("myInput");
+    let filter = input.value.toUpperCase();
+    const table = document.getElementById("myTable");
+    let tr = table.getElementsByTagName("tr");
+    if (filter == "") {
+      table.style.display = "none";
+    } else {
+      table.style.display = "inline-table";
+      for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          let txtValue = td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  }
+</script>
+</body>
+</html>
